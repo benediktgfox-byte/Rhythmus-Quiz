@@ -9,476 +9,437 @@
     --bg: #f4f7fb;
     --card: #ffffff;
     --text: #172033;
-    --muted: #657089;
-    --accent: #3858d6;
-    --accent-light: #e9edff;
-    --border: #d9dfeb;
-    --correct: #2e8b57;
-    --correct-bg: #e9f7ef;
-    --wrong: #c0392b;
-    --wrong-bg: #fdecea;
+    --muted: #667085;
+    --primary: #315efb;
+    --primary-dark: #2449c8;
+    --correct: #168a52;
+    --wrong: #d64545;
+    --border: #dfe5ef;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    min-height: 100vh;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background: var(--bg);
     color: var(--text);
-    display: flex;
-    justify-content: center;
-    padding: 24px 16px 40px;
   }
-  main { width: min(760px, 100%); }
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 16px 50px;
+  }
   .header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  h1 { margin: 0 0 8px; font-size: 2rem; }
+  .subtitle { color: var(--muted); margin: 0; }
+  .stats {
     display: flex;
     justify-content: space-between;
-    align-items: end;
-    gap: 16px;
-    margin-bottom: 18px;
+    gap: 12px;
+    margin: 18px 0;
+    flex-wrap: wrap;
   }
-  .eyebrow {
-    margin: 0 0 5px;
-    color: var(--muted);
-    font-size: .9rem;
-    font-weight: 600;
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    min-width: 130px;
+    text-align: center;
+    flex: 1;
   }
-  h1 { margin: 0; font-size: clamp(1.7rem, 5vw, 2.35rem); }
-  .stats { color: var(--muted); font-size: .95rem; text-align: right; }
-  .progress {
-    height: 9px;
-    background: #e1e6f0;
-    border-radius: 99px;
-    overflow: hidden;
-    margin-bottom: 18px;
-  }
-  .progress-bar {
-    height: 100%;
-    width: 10%;
-    background: var(--accent);
-    border-radius: inherit;
-    transition: width .25s ease;
-  }
+  .stat strong { display: block; font-size: 1.2rem; margin-top: 3px; }
   .card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: clamp(22px, 5vw, 38px);
-    box-shadow: 0 8px 30px rgba(28, 42, 75, .07);
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(30, 45, 70, 0.07);
+  }
+  .progress {
+    height: 9px;
+    background: #e8edf5;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .progress > div {
+    height: 100%;
+    width: 0;
+    background: var(--primary);
+    transition: width .25s ease;
   }
   .question-number {
-    color: var(--accent);
-    font-weight: 700;
-    font-size: .9rem;
-    margin-bottom: 10px;
+    color: var(--muted);
+    font-weight: bold;
+    margin-bottom: 8px;
   }
   .question {
-    font-size: clamp(1.15rem, 3.5vw, 1.45rem);
-    line-height: 1.4;
-    font-weight: 700;
-    margin: 0 0 24px;
+    font-size: 1.45rem;
+    line-height: 1.35;
+    margin: 0 0 20px;
   }
-  .choices {
+  .notation-box {
+    background: #fff;
+    border: 1px solid #cfd7e4;
+    border-radius: 14px;
+    padding: 18px 14px 12px;
+    margin: 0 auto 22px;
+    max-width: 700px;
+    overflow-x: auto;
+  }
+  .notation-title {
+    text-align: center;
+    color: var(--muted);
+    font-size: .95rem;
+    margin-bottom: 6px;
+  }
+  .notation {
+    width: 100%;
+    min-width: 430px;
+    height: 165px;
+    display: block;
+  }
+  .answer-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
   button {
     font: inherit;
-    cursor: pointer;
   }
-  .choice {
-    min-height: 58px;
+  .answer {
     border: 2px solid var(--border);
-    border-radius: 14px;
     background: #fff;
     color: var(--text);
-    padding: 12px 16px;
+    border-radius: 12px;
+    padding: 15px 14px;
+    cursor: pointer;
     text-align: left;
+    transition: .15s ease;
     font-weight: 600;
-    transition: transform .1s ease, border-color .15s ease, background .15s ease;
   }
-  .choice:hover:not(:disabled) {
-    border-color: var(--accent);
-    background: #fafbff;
+  .answer:hover:not(:disabled) {
+    border-color: var(--primary);
     transform: translateY(-1px);
   }
-  .choice:focus-visible, .next:focus-visible {
-    outline: 3px solid #aab7ff;
-    outline-offset: 2px;
+  .answer:disabled { cursor: default; }
+  .answer.correct {
+    border-color: var(--correct);
+    background: #eaf8f1;
+    color: #116b40;
   }
-  .choice.correct { border-color: var(--correct); background: var(--correct-bg); }
-  .choice.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
-  .choice:disabled { cursor: default; }
+  .answer.wrong {
+    border-color: var(--wrong);
+    background: #fff0f0;
+    color: #a93232;
+  }
   .feedback {
-    min-height: 28px;
     margin-top: 18px;
-    font-weight: 600;
-    line-height: 1.4;
+    padding: 13px 15px;
+    border-radius: 10px;
+    display: none;
+    line-height: 1.45;
   }
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 18px;
-  }
+  .feedback.show { display: block; }
+  .feedback.good { background: #eaf8f1; color: #116b40; }
+  .feedback.bad { background: #fff0f0; color: #a93232; }
   .next {
-    min-height: 48px;
-    padding: 10px 20px;
+    margin-top: 18px;
+    width: 100%;
     border: 0;
-    border-radius: 13px;
-    background: var(--accent);
+    background: var(--primary);
     color: white;
-    font-weight: 700;
+    padding: 14px 18px;
+    border-radius: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none;
   }
-  .next:disabled { opacity: .4; cursor: not-allowed; }
-  .result { text-align: center; }
-  .result-score {
-    font-size: clamp(3rem, 12vw, 5rem);
-    font-weight: 800;
-    line-height: 1;
-    margin: 12px 0;
-  }
-  .result-message { color: var(--muted); line-height: 1.5; }
-  .restart {
-    margin-top: 20px;
-    min-height: 50px;
-    padding: 11px 22px;
-    border: 0;
-    border-radius: 13px;
-    background: var(--accent);
-    color: white;
-    font-weight: 700;
-  }
-  .footer {
+  .next:hover { background: var(--primary-dark); }
+  .result {
     text-align: center;
+  }
+  .result h2 { font-size: 2rem; margin-top: 0; }
+  .score-big { font-size: 3.4rem; font-weight: 800; margin: 10px 0; }
+  .restart {
+    border: 0;
+    background: var(--primary);
+    color: #fff;
+    padding: 13px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .tip {
+    margin-top: 16px;
     color: var(--muted);
-    font-size: .82rem;
-    margin-top: 15px;
+    font-size: .92rem;
+    text-align: center;
   }
-  @media (max-width: 560px) {
-    body { padding: 18px 12px 28px; }
-    .header { align-items: start; flex-direction: column; }
-    .stats { text-align: left; }
-    .choices { grid-template-columns: 1fr; }
-    .card { border-radius: 18px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { scroll-behavior: auto !important; transition: none !important; }
+  @media (max-width: 650px) {
+    .card { padding: 20px 15px; }
+    .answer-grid { grid-template-columns: 1fr; }
+    .question { font-size: 1.2rem; }
+    h1 { font-size: 1.65rem; }
   }
 </style>
 </head>
 <body>
-<main id="app">
-  <div class="header">
-    <div>
-      <p class="eyebrow">Musik · Notenwerte</p>
-      <h1>🥁 Notenwerte-Quiz</h1>
-    </div>
-    <div class="stats">
-      <div id="progressText">Frage 1 von 10</div>
-      <strong id="scoreText">0 Punkte</strong>
-    </div>
+<div class="wrap">
+  <header class="header">
+    <h1>🎵 Notenwerte-Quiz</h1>
+    <p class="subtitle">Erkenne Notenwerte, Pausen und einfache Kombinationen.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat">Frage<strong id="counter">1 / 12</strong></div>
+    <div class="stat">Punkte<strong id="score">0</strong></div>
+    <div class="stat">Richtig<strong id="correctCount">0</strong></div>
   </div>
 
-  <div class="progress" aria-label="Quizfortschritt">
-    <div id="progressBar" class="progress-bar"></div>
-  </div>
+  <main class="card" id="quizCard">
+    <div class="progress"><div id="progressBar"></div></div>
+    <div class="question-number" id="questionNumber"></div>
+    <h2 class="question" id="questionText"></h2>
+    <div id="notationContainer"></div>
+    <div class="answer-grid" id="answers"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next" id="nextButton">Nächste Frage →</button>
+  </main>
 
-  <section id="quizCard" class="card">
-    <div id="questionNumber" class="question-number"></div>
-    <p id="question" class="question"></p>
-    <div id="choices" class="choices"></div>
-    <div id="feedback" class="feedback" aria-live="polite"></div>
-    <div class="actions">
-      <button id="nextButton" class="next" type="button" disabled>Nächste Frage</button>
-    </div>
-  </section>
-
-  <p class="footer">Bei jedem neuen Durchlauf werden 10 Fragen zufällig aus dem Fragenpool ausgewählt.</p>
-</main>
+  <p class="tip">Jede Runde enthält zufällig ausgewählte Fragen. Bei den Notenbildern kannst du die Noten direkt ablesen.</p>
+</div>
 
 <script>
-(() => {
-  "use strict";
+const noteNames = {
+  whole: "Ganze Note",
+  half: "Halbe Note",
+  quarter: "Viertelnote",
+  eighth: "Achtelnote",
+  sixteenth: "Sechzehntelnote"
+};
 
-  const questionPool = [
-    {
-      q: "Wie viele Zählzeiten hat eine Viertelnote im 4/4-Takt?",
-      a: ["1", "2", "3", "4"],
-      c: "1",
-      e: "Eine Viertelnote entspricht im 4/4-Takt einer Zählzeit."
-    },
-    {
-      q: "Wie viele Viertelnoten entsprechen einer halben Note?",
-      a: ["1", "2", "3", "4"],
-      c: "2",
-      e: "Eine halbe Note dauert doppelt so lange wie eine Viertelnote."
-    },
-    {
-      q: "Wie viele Viertelnoten entsprechen einer ganzen Note?",
-      a: ["2", "3", "4", "8"],
-      c: "4",
-      e: "Eine ganze Note entspricht vier Viertelnoten."
-    },
-    {
-      q: "Wie viele Achtelnoten entsprechen einer Viertelnote?",
-      a: ["1", "2", "3", "4"],
-      c: "2",
-      e: "Eine Viertelnote hat die gleiche Dauer wie zwei Achtelnoten."
-    },
-    {
-      q: "Welche Kombination ergibt genau eine ganze Note?",
-      a: ["2 Viertelnoten", "4 Viertelnoten", "3 Viertelnoten", "2 Achtelnoten"],
-      c: "4 Viertelnoten",
-      e: "Vier Viertelnoten ergeben zusammen die Dauer einer ganzen Note."
-    },
-    {
-      q: "Welche Kombination entspricht genau einer halben Note?",
-      a: ["2 Viertelnoten", "1 Viertelnote", "4 Achtelnoten und 1 Viertelnote", "1 Achtelnote"],
-      c: "2 Viertelnoten",
-      e: "Zwei Viertelnoten haben zusammen die Dauer einer halben Note."
-    },
-    {
-      q: "Wie viele Achtelnoten entsprechen einer halben Note?",
-      a: ["2", "3", "4", "6"],
-      c: "4",
-      e: "Eine halbe Note entspricht vier Achtelnoten."
-    },
-    {
-      q: "Welche Note ist doppelt so lang wie eine Viertelnote?",
-      a: ["Achtelnote", "Halbe Note", "Ganze Note", "Sechzehntelnote"],
-      c: "Halbe Note",
-      e: "Eine halbe Note ist doppelt so lang wie eine Viertelnote."
-    },
-    {
-      q: "Welche Kombination ergibt genau zwei Viertelnoten?",
-      a: ["1 halbe Note", "1 ganze Note", "2 halbe Noten", "1 Achtelnote"],
-      c: "1 halbe Note",
-      e: "Eine halbe Note hat genau die Dauer von zwei Viertelnoten."
-    },
-    {
-      q: "Ein 4/4-Takt enthält eine halbe Note. Wie viele Viertelnoten passen noch hinein?",
-      a: ["1", "2", "3", "4"],
-      c: "2",
-      e: "Der 4/4-Takt umfasst vier Viertelnoten; nach einer halben Note bleiben zwei übrig."
-    },
-    {
-      q: "Wie viele Sechzehntelnoten entsprechen einer Viertelnote?",
-      a: ["2", "3", "4", "8"],
-      c: "4",
-      e: "Eine Viertelnote entspricht vier Sechzehntelnoten."
-    },
-    {
-      q: "Wie viele Sechzehntelnoten entsprechen einer halben Note?",
-      a: ["4", "6", "8", "16"],
-      c: "8",
-      e: "Eine halbe Note entspricht acht Sechzehntelnoten."
-    },
-    {
-      q: "Welche Note dauert länger als eine Viertelnote?",
-      a: ["Achtelnote", "Sechzehntelnote", "Halbe Note", "Keine davon"],
-      c: "Halbe Note",
-      e: "Die halbe Note ist länger als die Viertelnote."
-    },
-    {
-      q: "Welche Note ist halb so lang wie eine Viertelnote?",
-      a: ["Halbe Note", "Achtelnote", "Ganze Note", "Viertelnote"],
-      c: "Achtelnote",
-      e: "Eine Achtelnote dauert halb so lange wie eine Viertelnote."
-    },
-    {
-      q: "Wie viele Achtelnoten passen in einen 4/4-Takt?",
-      a: ["4", "6", "8", "12"],
-      c: "8",
-      e: "Vier Viertelnoten entsprechen acht Achtelnoten."
-    },
-    {
-      q: "Wie viele Viertelnoten entsprechen zwei ganzen Noten?",
-      a: ["4", "6", "8", "10"],
-      c: "8",
-      e: "Eine ganze Note entspricht vier Viertelnoten, also entsprechen zwei ganzen Noten acht Viertelnoten."
-    },
-    {
-      q: "Eine ganze Note entspricht wie vielen halben Noten?",
-      a: ["1", "2", "3", "4"],
-      c: "2",
-      e: "Eine ganze Note hat die Dauer von zwei halben Noten."
-    },
-    {
-      q: "Eine halbe Note entspricht wie vielen Sechzehntelnoten?",
-      a: ["4", "6", "8", "12"],
-      c: "8",
-      e: "Eine halbe Note entspricht acht Sechzehntelnoten."
-    },
-    {
-      q: "Welche Kombination ergibt genau eine Viertelnote?",
-      a: ["2 Achtelnoten", "2 Viertelnoten", "1 halbe Note", "4 Achtelnoten"],
-      c: "2 Achtelnoten",
-      e: "Zwei Achtelnoten haben zusammen die Dauer einer Viertelnote."
-    },
-    {
-      q: "Welche Kombination ergibt genau eine halbe Note?",
-      a: ["1 Achtelnote", "2 Achtelnoten", "4 Achtelnoten", "8 Achtelnoten"],
-      c: "4 Achtelnoten",
-      e: "Vier Achtelnoten entsprechen der Dauer einer halben Note."
-    },
-    {
-      q: "Welche Kombination ergibt genau drei Viertelnoten?",
-      a: ["1 halbe Note + 1 Viertelnote", "1 ganze Note", "2 halbe Noten", "2 Achtelnoten"],
-      c: "1 halbe Note + 1 Viertelnote",
-      e: "Eine halbe Note plus eine Viertelnote ergibt drei Viertelnoten."
-    },
-    {
-      q: "Wie viele Sechzehntelnoten entsprechen einer ganzen Note?",
-      a: ["8", "12", "16", "20"],
-      c: "16",
-      e: "Eine ganze Note entspricht vier Viertelnoten und damit sechzehn Sechzehntelnoten."
-    },
-    {
-      q: "Wie viele Achtelnoten entsprechen zwei Viertelnoten?",
-      a: ["2", "4", "6", "8"],
-      c: "4",
-      e: "Zwei Viertelnoten entsprechen vier Achtelnoten."
-    },
-    {
-      q: "Wie viele Viertelnoten entsprechen drei halben Noten?",
-      a: ["3", "4", "6", "8"],
-      c: "6",
-      e: "Jede halbe Note entspricht zwei Viertelnoten, also sind drei halbe Noten sechs Viertelnoten."
-    }
-  ];
+const questionPool = [
+  {q:"Wie viele Viertelnoten entsprechen einer ganzen Note?", a:["2","3","4","8"], c:"4"},
+  {q:"Wie viele Viertelnoten entsprechen einer halben Note?", a:["1","2","4","8"], c:"2"},
+  {q:"Wie viele Achtelnoten entsprechen einer halben Note?", a:["2","4","6","8"], c:"4"},
+  {q:"Wie viele Sechzehntelnoten entsprechen einer Viertelnote?", a:["2","3","4","8"], c:"4"},
+  {q:"Welche Note dauert in 4/4 normalerweise 1 Zählzeit?", a:["Ganze Note","Halbe Note","Viertelnote","Achtelnote"], c:"Viertelnote"},
+  {q:"Welche Note dauert 2 Zählzeiten?", a:["Ganze Note","Halbe Note","Viertelnote","Achtelnote"], c:"Halbe Note"},
+  {q:"Welche Note dauert 4 Zählzeiten?", a:["Ganze Note","Halbe Note","Viertelnote","Achtelnote"], c:"Ganze Note"},
+  {q:"Wie viele Achtelnoten passen in eine ganze Note?", a:["2","4","6","8"], c:"8"},
+  {q:"Wie viele Sechzehntelnoten passen in eine halbe Note?", a:["4","6","8","12"], c:"8"},
+  {q:"Welche Kombination ergibt 4 Zählzeiten?", a:["4 Viertelnoten","2 Viertelnoten","3 Achtelnoten","1 Viertelnote"], c:"4 Viertelnoten"},
+  {q:"Welche Kombination ergibt 2 Zählzeiten?", a:["1 Achtelnote","2 Viertelnoten","3 Viertelnoten","1 Sechzehntelnote"], c:"2 Viertelnoten"},
+  {q:"Welche Kombination ergibt 1 Zählzeit?", a:["2 Viertelnoten","4 Achtelnoten","2 Achtelnoten","1 halbe Note"], c:"2 Achtelnoten"},
+  {q:"Was ist doppelt so lang wie eine Viertelnote?", a:["Achtelnote","Halbe Note","Sechzehntelnote","Achtelpause"], c:"Halbe Note"},
+  {q:"Was ist halb so lang wie eine Viertelnote?", a:["Halbe Note","Ganze Note","Achtelnote","Viertelpause"], c:"Achtelnote"},
+  {q:"Was ist halb so lang wie eine Achtelnote?", a:["Viertelnote","Sechzehntelnote","Halbe Note","Ganze Note"], c:"Sechzehntelnote"},
 
-  const $ = id => document.getElementById(id);
-  const progressText = $("progressText");
-  const scoreText = $("scoreText");
-  const progressBar = $("progressBar");
-  const questionNumber = $("questionNumber");
-  const question = $("question");
-  const choices = $("choices");
-  const feedback = $("feedback");
-  const nextButton = $("nextButton");
-  const quizCard = $("quizCard");
+  // Notenbilder
+  {type:"notation", q:"Welcher Notenwert ist hier zu sehen?", note:"whole", a:["Ganze Note","Halbe Note","Viertelnote","Achtelnote"], c:"Ganze Note", explain:"Ein leerer Notenkopf ohne Hals ist hier die ganze Note."},
+  {type:"notation", q:"Welcher Notenwert ist hier zu sehen?", note:"half", a:["Ganze Note","Halbe Note","Viertelnote","Achtelnote"], c:"Halbe Note", explain:"Die halbe Note hat einen leeren Notenkopf und einen Hals."},
+  {type:"notation", q:"Welcher Notenwert ist hier zu sehen?", note:"quarter", a:["Ganze Note","Halbe Note","Viertelnote","Achtelnote"], c:"Viertelnote", explain:"Die Viertelnote hat einen ausgefüllten Notenkopf und einen Hals."},
+  {type:"notation", q:"Welcher Notenwert ist hier zu sehen?", note:"eighth", a:["Viertelnote","Achtelnote","Halbe Note","Sechzehntelnote"], c:"Achtelnote", explain:"Die Achtelnote hat einen ausgefüllten Notenkopf, einen Hals und einen Fähnchenbalken."},
+  {type:"notation", q:"Welcher Notenwert ist hier zu sehen?", note:"sixteenth", a:["Achtelnote","Sechzehntelnote","Viertelnote","Halbe Note"], c:"Sechzehntelnote", explain:"Die Sechzehntelnote hat zwei Fähnchen bzw. zwei Balken."},
 
-  let questions = [];
-  let current = 0;
-  let score = 0;
-  let answered = false;
+  // Bild + Zählfragen
+  {type:"notation", q:"Wie viele Zählzeiten hat diese Note im 4/4-Takt?", note:"whole", a:["1","2","3","4"], c:"4"},
+  {type:"notation", q:"Wie viele Zählzeiten hat diese Note im 4/4-Takt?", note:"half", a:["1","2","3","4"], c:"2"},
+  {type:"notation", q:"Wie viele Zählzeiten hat diese Note im 4/4-Takt?", note:"quarter", a:["1","2","3","4"], c:"1"},
+  {type:"notation", q:"Wie viele Achtelnoten entsprechen der abgebildeten Viertelnote?", note:"quarter", a:["1","2","3","4"], c:"2"},
+  {type:"notation", q:"Wie viele Sechzehntelnoten entsprechen der abgebildeten Viertelnote?", note:"quarter", a:["2","3","4","8"], c:"4"},
 
-  function shuffle(array) {
-    const copy = [...array];
-    for (let i = copy.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
+  // Pausen
+  {q:"Welche Pause entspricht einer Viertelnote?", a:["Viertelpause","Halbepause","Ganze Pause","Achtelpause"], c:"Viertelpause"},
+  {q:"Welche Pause entspricht einer halben Note?", a:["Achtelpause","Viertelpause","Halbepause","Ganze Pause"], c:"Halbepause"},
+  {q:"Welche Pause entspricht einer ganzen Note?", a:["Ganze Pause","Halbepause","Viertelpause","Achtelpause"], c:"Ganze Pause"},
+  {q:"Welche Pause ist halb so lang wie eine Viertelpause?", a:["Halbepause","Achtelpause","Ganze Pause","Sechzehntelpause"], c:"Achtelpause"},
+
+  // Kombinationen
+  {q:"Welche Kombination entspricht einer halben Note?", a:["2 Viertelnoten","4 Viertelnoten","2 Achtelnoten","1 Achtelnote"], c:"2 Viertelnoten"},
+  {q:"Welche Kombination entspricht einer Viertelnote?", a:["4 Sechzehntelnoten","2 Viertelnoten","4 Achtelnoten","1 halbe Note"], c:"4 Sechzehntelnoten"},
+  {q:"Welche Kombination entspricht einer ganzen Note?", a:["2 Viertelnoten","4 Viertelnoten","4 Achtelnoten","2 Achtelnoten"], c:"4 Viertelnoten"},
+  {q:"Welche Kombination entspricht 3 Zählzeiten?", a:["3 Viertelnoten","3 Achtelnoten","1 Viertelnote + 1 Achtelnote","1 halbe Note"], c:"3 Viertelnoten"},
+  {q:"Eine Viertelnote wird in zwei gleiche Teile geteilt. Welche Noten entstehen?", a:["2 Achtelnoten","2 Sechzehntelnoten","2 Halbe Noten","4 Achtelnoten"], c:"2 Achtelnoten"},
+  {q:"Eine Achtelnote wird in zwei gleiche Teile geteilt. Welche Noten entstehen?", a:["2 Viertelnoten","2 Sechzehntelnoten","4 Sechzehntelnoten","2 Halbe Noten"], c:"2 Sechzehntelnoten"}
+];
+
+const TOTAL = 12;
+let questions = [];
+let current = 0;
+let score = 0;
+let correctCount = 0;
+let answered = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
+}
 
-  function createRound() {
-    questions = shuffle(questionPool)
-      .slice(0, 10)
-      .map(item => ({ ...item, answers: shuffle(item.a) }));
+function makeQuestions() {
+  questions = shuffle(questionPool).slice(0, TOTAL).map(item => ({
+    ...item,
+    a: shuffle(item.a)
+  }));
+}
 
-    current = 0;
-    score = 0;
-    answered = false;
-    renderQuestion();
-  }
+function notationSVG(type) {
+  const note = {
+    whole: `
+      <ellipse cx="210" cy="82" rx="27" ry="17" fill="white" stroke="black" stroke-width="4" transform="rotate(-8 210 82)"/>
+    `,
+    half: `
+      <ellipse cx="210" cy="82" rx="27" ry="17" fill="white" stroke="black" stroke-width="4" transform="rotate(-8 210 82)"/>
+      <line x1="236" y1="80" x2="236" y2="22" stroke="black" stroke-width="4"/>
+    `,
+    quarter: `
+      <ellipse cx="210" cy="82" rx="25" ry="17" fill="black" transform="rotate(-8 210 82)"/>
+      <line x1="234" y1="80" x2="234" y2="20" stroke="black" stroke-width="5"/>
+    `,
+    eighth: `
+      <ellipse cx="210" cy="82" rx="25" ry="17" fill="black" transform="rotate(-8 210 82)"/>
+      <line x1="234" y1="80" x2="234" y2="20" stroke="black" stroke-width="5"/>
+      <path d="M234 22 Q267 30 255 48" fill="none" stroke="black" stroke-width="6" stroke-linecap="round"/>
+    `,
+    sixteenth: `
+      <ellipse cx="210" cy="82" rx="25" ry="17" fill="black" transform="rotate(-8 210 82)"/>
+      <line x1="234" y1="80" x2="234" y2="20" stroke="black" stroke-width="5"/>
+      <path d="M234 22 Q267 30 255 48" fill="none" stroke="black" stroke-width="6" stroke-linecap="round"/>
+      <path d="M234 37 Q267 45 255 63" fill="none" stroke="black" stroke-width="6" stroke-linecap="round"/>
+    `
+  }[type];
 
-  function renderQuestion() {
-    const item = questions[current];
-    answered = false;
+  return `
+  <div class="notation-box">
+    <div class="notation-title">Notenbild</div>
+    <svg class="notation" viewBox="0 0 430 165" role="img" aria-label="${noteNames[type]}">
+      <line x1="50" y1="48" x2="380" y2="48" stroke="black" stroke-width="2"/>
+      <line x1="50" y1="65" x2="380" y2="65" stroke="black" stroke-width="2"/>
+      <line x1="50" y1="82" x2="380" y2="82" stroke="black" stroke-width="2"/>
+      <line x1="50" y1="99" x2="380" y2="99" stroke="black" stroke-width="2"/>
+      <line x1="50" y1="116" x2="380" y2="116" stroke="black" stroke-width="2"/>
+      <text x="67" y="108" font-size="72" font-family="serif">𝄞</text>
+      <g transform="translate(0,0)">${note}</g>
+    </svg>
+  </div>`;
+}
 
-    progressText.textContent = `Frage ${current + 1} von ${questions.length}`;
-    scoreText.textContent = `${score} ${score === 1 ? "Punkt" : "Punkte"}`;
-    progressBar.style.width = `${((current + 1) / questions.length) * 100}%`;
+function renderQuestion() {
+  answered = false;
+  const item = questions[current];
 
-    questionNumber.textContent = `Frage ${current + 1}`;
-    question.textContent = item.q;
-    feedback.textContent = "";
-    nextButton.disabled = true;
-    nextButton.textContent = current === questions.length - 1
-      ? "Ergebnis anzeigen"
-      : "Nächste Frage";
+  document.getElementById("counter").textContent = `${current + 1} / ${TOTAL}`;
+  document.getElementById("score").textContent = score;
+  document.getElementById("correctCount").textContent = correctCount;
+  document.getElementById("progressBar").style.width = `${((current) / TOTAL) * 100}%`;
+  document.getElementById("questionNumber").textContent = `Frage ${current + 1}`;
+  document.getElementById("questionText").textContent = item.q;
 
-    choices.innerHTML = "";
+  const notationContainer = document.getElementById("notationContainer");
+  notationContainer.innerHTML = item.type === "notation" ? notationSVG(item.note) : "";
 
-    item.answers.forEach(answer => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "choice";
-      button.textContent = answer;
-      button.addEventListener("click", () => chooseAnswer(answer, button));
-      choices.appendChild(button);
-    });
-  }
-
-  function chooseAnswer(selected, selectedButton) {
-    if (answered) return;
-    answered = true;
-
-    const item = questions[current];
-    const buttons = [...choices.querySelectorAll(".choice")];
-    buttons.forEach(button => button.disabled = true);
-
-    if (selected === item.c) {
-      score++;
-      selectedButton.classList.add("correct");
-      feedback.textContent = "✓ Richtig! " + item.e;
-    } else {
-      selectedButton.classList.add("wrong");
-      const correctButton = buttons.find(button => button.textContent === item.c);
-      if (correctButton) correctButton.classList.add("correct");
-      feedback.textContent = "Nicht ganz. Richtig ist: " + item.c + ". " + item.e;
-    }
-
-    scoreText.textContent = `${score} ${score === 1 ? "Punkt" : "Punkte"}`;
-    nextButton.disabled = false;
-  }
-
-  function showResult() {
-    const percent = Math.round((score / questions.length) * 100);
-
-    quizCard.innerHTML = `
-      <div class="result">
-        <div class="question-number">Quiz beendet</div>
-        <h2>Geschafft!</h2>
-        <div class="result-score">${score} / ${questions.length}</div>
-        <p class="result-message">
-          Du hast <strong>${percent}%</strong> der Fragen richtig beantwortet.
-        </p>
-        <button id="restartButton" class="restart" type="button">Nochmal spielen</button>
-      </div>
-    `;
-
-    $("restartButton").addEventListener("click", () => {
-      quizCard.innerHTML = `
-        <div id="questionNumber" class="question-number"></div>
-        <p id="question" class="question"></p>
-        <div id="choices" class="choices"></div>
-        <div id="feedback" class="feedback" aria-live="polite"></div>
-        <div class="actions">
-          <button id="nextButton" class="next" type="button" disabled>Nächste Frage</button>
-        </div>
-      `;
-
-      // Nach dem Neustart die DOM-Referenzen neu holen.
-      location.reload();
-    });
-  }
-
-  nextButton.addEventListener("click", () => {
-    if (!answered) return;
-
-    if (current < questions.length - 1) {
-      current++;
-      renderQuestion();
-    } else {
-      showResult();
-    }
+  const answers = document.getElementById("answers");
+  answers.innerHTML = "";
+  item.a.forEach(answer => {
+    const btn = document.createElement("button");
+    btn.className = "answer";
+    btn.textContent = answer;
+    btn.addEventListener("click", () => chooseAnswer(btn, answer, item));
+    answers.appendChild(btn);
   });
 
-  createRound();
-})();
+  const feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  document.getElementById("nextButton").style.display = "none";
+}
+
+function chooseAnswer(button, answer, item) {
+  if (answered) return;
+  answered = true;
+
+  const buttons = [...document.querySelectorAll(".answer")];
+  buttons.forEach(b => b.disabled = true);
+
+  const feedback = document.getElementById("feedback");
+  if (answer === item.c) {
+    button.classList.add("correct");
+    score += 1;
+    correctCount += 1;
+    feedback.className = "feedback show good";
+    feedback.innerHTML = `✅ <strong>Richtig!</strong> ${item.explain || ""}`;
+  } else {
+    button.classList.add("wrong");
+    const correctButton = buttons.find(b => b.textContent === item.c);
+    if (correctButton) correctButton.classList.add("correct");
+    feedback.className = "feedback show bad";
+    feedback.innerHTML = `❌ <strong>Nicht ganz.</strong> Richtig ist: <strong>${item.c}</strong>. ${item.explain || ""}`;
+  }
+
+  document.getElementById("score").textContent = score;
+  document.getElementById("correctCount").textContent = correctCount;
+  document.getElementById("progressBar").style.width = `${((current + 1) / TOTAL) * 100}%`;
+  document.getElementById("nextButton").style.display = "block";
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= TOTAL) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById("quizCard").innerHTML = `
+    <div class="result">
+      <h2>🎉 Quiz geschafft!</h2>
+      <div class="score-big">${score} / ${TOTAL}</div>
+      <p>Du hast <strong>${correctCount} von ${TOTAL}</strong> Fragen richtig beantwortet.</p>
+      <p>${resultText()}</p>
+      <button class="restart" onclick="startQuiz()">Nochmal spielen</button>
+    </div>`;
+}
+
+function resultText() {
+  const p = score / TOTAL;
+  if (p === 1) return "Alle Fragen richtig – klasse!";
+  if (p >= .75) return "Sehr gut! Die Notenwerte sitzen schon ziemlich sicher.";
+  if (p >= .5) return "Gut gemacht! Mit etwas Übung werden die Notenwerte noch sicherer.";
+  return "Weiter üben lohnt sich – probiere das Quiz einfach noch einmal.";
+}
+
+function startQuiz() {
+  current = 0;
+  score = 0;
+  correctCount = 0;
+  document.getElementById("quizCard").innerHTML = `
+    <div class="progress"><div id="progressBar"></div></div>
+    <div class="question-number" id="questionNumber"></div>
+    <h2 class="question" id="questionText"></h2>
+    <div id="notationContainer"></div>
+    <div class="answer-grid" id="answers"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next" id="nextButton">Nächste Frage →</button>`;
+  document.getElementById("nextButton").addEventListener("click", nextQuestion);
+  makeQuestions();
+  renderQuestion();
+  document.getElementById("score").textContent = "0";
+  document.getElementById("correctCount").textContent = "0";
+}
+
+document.getElementById("nextButton").addEventListener("click", nextQuestion);
+startQuiz();
 </script>
 </body>
 </html>
