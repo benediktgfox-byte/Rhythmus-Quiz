@@ -1,583 +1,860 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notenwerte-Quiz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notenwerte-Quiz</title>
 
-<style>
-:root {
-  --bg: #eef3ff;
-  --card: #ffffff;
-  --text: #172033;
-  --muted: #667085;
-  --primary: #315efb;
-  --primary-dark: #2449c8;
-  --correct: #168a52;
-  --wrong: #d64545;
-  --border: #dfe5ef;
-  --gold: #f5b700;
-}
+  <style>
+    :root {
+      --bg: #eef3ff;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --primary: #315efb;
+      --primary-dark: #2449c8;
+      --correct: #168a52;
+      --wrong: #d64545;
+      --border: #dfe5ef;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(circle at 10% 10%, #dce5ff 0 10%, transparent 28%),
-    radial-gradient(circle at 90% 20%, #e8dfff 0 8%, transparent 25%),
-    var(--bg);
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, #dce5ff 0 10%, transparent 28%),
+        radial-gradient(circle at 90% 20%, #e8dfff 0 8%, transparent 25%),
+        var(--bg);
+    }
 
-.wrap {
-  max-width: 940px;
-  margin: auto;
-  padding: 24px 16px 50px;
-}
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 24px 16px 50px;
+    }
 
-.header {
-  text-align: center;
-  margin-bottom: 18px;
-}
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
 
-.logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 66px;
-  height: 66px;
-  margin-bottom: 8px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, #315efb, #7946e8);
-  color: white;
-  font-size: 2.2rem;
-  box-shadow: 0 9px 22px #315efb44;
-}
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 8px;
+      border-radius: 20px;
+      color: white;
+      background: linear-gradient(135deg, #315efb, #7946e8);
+      font-size: 2.2rem;
+      box-shadow: 0 9px 22px #315efb44;
+    }
 
-h1 {
-  margin: 0 0 8px;
-  font-size: 2rem;
-}
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
 
-.subtitle {
-  margin: 0;
-  color: var(--muted);
-}
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+    }
 
-.stats {
-  display: flex;
-  gap: 12px;
-  margin: 20px 0;
-  flex-wrap: wrap;
-}
+    .stats {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
 
-.stat {
-  flex: 1;
-  min-width: 130px;
-  padding: 12px 14px;
-  text-align: center;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 5px 18px #233b7010;
-}
+    .stat {
+      flex: 1;
+      min-width: 130px;
+      padding: 12px 14px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 5px 18px #233b7010;
+    }
 
-.stat strong {
-  display: block;
-  margin-top: 3px;
-  font-size: 1.25rem;
-}
+    .stat strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 1.25rem;
+    }
 
-.card {
-  padding: 28px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  box-shadow: 0 16px 45px #263b7018;
-}
+    .card {
+      padding: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 16px 45px #263b7018;
+    }
 
-.progress {
-  height: 10px;
-  margin-bottom: 24px;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #e7ecf7;
-}
+    .progress {
+      height: 10px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #e7ecf7;
+    }
 
-.progress > div {
-  width: 0;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #315efb, #8147e8);
-  transition: width .3s ease;
-}
+    .progress > div {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #315efb, #8147e8);
+      transition: width .3s ease;
+    }
 
-.question-number {
-  margin-bottom: 8px;
-  color: var(--muted);
-  font-weight: bold;
-}
+    .question-number {
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-weight: bold;
+    }
 
-.question {
-  margin: 0 0 20px;
-  font-size: 1.45rem;
-  line-height: 1.35;
-}
+    .question {
+      margin: 0 0 20px;
+      font-size: 1.45rem;
+      line-height: 1.35;
+    }
 
-.notation-box {
-  max-width: 720px;
-  margin: 0 auto 24px;
-  padding: 15px;
-  overflow-x: auto;
-  border: 1px solid #cfd7e4;
-  border-radius: 17px;
-  background: linear-gradient(145deg, #fff, #f7f9ff);
-}
+    .notation-box {
+      max-width: 720px;
+      margin: 0 auto 24px;
+      padding: 15px;
+      overflow-x: auto;
+      border: 1px solid #cfd7e4;
+      border-radius: 17px;
+      background: linear-gradient(145deg, #fff, #f7f9ff);
+    }
 
-.notation-title {
-  margin-bottom: 4px;
-  color: var(--muted);
-  text-align: center;
-  font-size: .92rem;
-}
+    .notation-title {
+      margin-bottom: 4px;
+      color: var(--muted);
+      text-align: center;
+      font-size: .92rem;
+    }
 
-.notation {
-  display: block;
-  width: 100%;
-  min-width: 440px;
-  height: 190px;
-}
+    .notation {
+      display: block;
+      width: 100%;
+      min-width: 440px;
+      height: 190px;
+    }
 
-.answer-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
+    .answer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-button {
-  font: inherit;
-}
+    button {
+      font: inherit;
+    }
 
-.answer {
-  padding: 16px 14px;
-  border: 2px solid var(--border);
-  border-radius: 14px;
-  color: var(--text);
-  background: white;
-  font-weight: bold;
-  text-align: left;
-  cursor: pointer;
-  transition: .15s ease;
-}
+    .answer {
+      padding: 16px 14px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      background: white;
+      font-weight: bold;
+      text-align: left;
+      cursor: pointer;
+      transition: .15s ease;
+    }
 
-.answer:hover:not(:disabled) {
-  border-color: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 12px #315efb20;
-}
+    .answer:hover:not(:disabled) {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px #315efb20;
+    }
 
-.answer:disabled {
-  cursor: default;
-}
+    .answer:disabled {
+      cursor: default;
+    }
 
-.answer.correct {
-  border-color: var(--correct);
-  color: #116b40;
-  background: #eaf8f1;
-}
+    .answer.correct {
+      border-color: var(--correct);
+      color: #116b40;
+      background: #eaf8f1;
+    }
 
-.answer.wrong {
-  border-color: var(--wrong);
-  color: #a93232;
-  background: #fff0f0;
-}
+    .answer.wrong {
+      border-color: var(--wrong);
+      color: #a93232;
+      background: #fff0f0;
+    }
 
-.feedback {
-  display: none;
-  margin-top: 18px;
-  padding: 14px 15px;
-  border-radius: 12px;
-  line-height: 1.45;
-}
+    .feedback {
+      display: none;
+      margin-top: 18px;
+      padding: 14px 15px;
+      border-radius: 12px;
+      line-height: 1.45;
+    }
 
-.feedback.show {
-  display: block;
-}
+    .feedback.show {
+      display: block;
+    }
 
-.feedback.good {
-  color: #116b40;
-  background: #eaf8f1;
-}
+    .feedback.good {
+      color: #116b40;
+      background: #eaf8f1;
+    }
 
-.feedback.bad {
-  color: #a93232;
-  background: #fff0f0;
-}
+    .feedback.bad {
+      color: #a93232;
+      background: #fff0f0;
+    }
 
-.next,
-.restart {
-  width: 100%;
-  margin-top: 18px;
-  padding: 14px 18px;
-  border: 0;
-  border-radius: 12px;
-  color: white;
-  background: var(--primary);
-  font-weight: bold;
-  cursor: pointer;
-}
+    .next,
+    .restart {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 12px;
+      color: white;
+      background: var(--primary);
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-.next:hover,
-.restart:hover {
-  background: var(--primary-dark);
-}
+    .next:hover,
+    .restart:hover {
+      background: var(--primary-dark);
+    }
 
-.result {
-  text-align: center;
-}
+    .result {
+      text-align: center;
+    }
 
-.result h2 {
-  margin-top: 0;
-  font-size: 2rem;
-}
+    .result h2 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
 
-.score-big {
-  margin: 12px 0;
-  color: var(--primary);
-  font-size: 3.5rem;
-  font-weight: 800;
-}
+    .result-icon {
+      font-size: 4rem;
+    }
 
-.result-icon {
-  font-size: 4rem;
-}
+    .score-big {
+      margin: 12px 0;
+      color: var(--primary);
+      font-size: 3.5rem;
+      font-weight: 800;
+    }
 
-.tip {
-  margin-top: 16px;
-  color: var(--muted);
-  font-size: .92rem;
-  text-align: center;
-}
+    .tip {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: .92rem;
+      text-align: center;
+    }
 
-.celebration {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  overflow: hidden;
-  pointer-events: none;
-}
+    .celebration {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      overflow: hidden;
+      pointer-events: none;
+    }
 
-.star {
-  position: absolute;
-  left: 50%;
-  top: 45%;
-  font-size: 28px;
-  animation: burst .85s ease-out forwards;
-}
+    .star {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      font-size: 28px;
+      animation: burst .85s ease-out forwards;
+    }
 
-@keyframes burst {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(.3);
-  }
+    @keyframes burst {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.3);
+      }
 
-  15% {
-    opacity: 1;
-  }
+      15% {
+        opacity: 1;
+      }
 
-  100% {
-    opacity: 0;
-    transform:
-      translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
-      rotate(var(--r))
-      scale(1.2);
-  }
-}
+      100% {
+        opacity: 0;
+        transform:
+          translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+          rotate(var(--r))
+          scale(1.2);
+      }
+    }
 
-@media (max-width: 650px) {
-  .card {
-    padding: 20px 15px;
-  }
+    @media (max-width: 650px) {
+      .card {
+        padding: 20px 15px;
+      }
 
-  .answer-grid {
-    grid-template-columns: 1fr;
-  }
+      .answer-grid {
+        grid-template-columns: 1fr;
+      }
 
-  .question {
-    font-size: 1.2rem;
-  }
+      .question {
+        font-size: 1.2rem;
+      }
 
-  h1 {
-    font-size: 1.65rem;
-  }
-}
-</style>
+      h1 {
+        font-size: 1.65rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
+  <div class="wrap">
 
-  <header class="header">
-    <div class="logo">🎼</div>
-    <h1>Notenwerte-Quiz</h1>
-    <p class="subtitle">
-      Erkenne Notenwerte, Pausen und die Dauer von Notenkombinationen.
+    <header class="header">
+      <div class="logo">🎼</div>
+      <h1>Notenwerte-Quiz</h1>
+      <p class="subtitle">
+        Erkenne Notenwerte, Pausen und Notenkombinationen.
+      </p>
+    </header>
+
+    <div class="stats">
+      <div class="stat">
+        Frage
+        <strong id="counter">1 / 16</strong>
+      </div>
+
+      <div class="stat">
+        Punkte
+        <strong id="score">0</strong>
+      </div>
+
+      <div class="stat">
+        Richtig
+        <strong id="correctCount">0</strong>
+      </div>
+    </div>
+
+    <main class="card" id="quizCard">
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
+
+      <div class="question-number" id="questionNumber"></div>
+      <h2 class="question" id="questionText"></h2>
+
+      <div id="notationContainer"></div>
+      <div class="answer-grid" id="answers"></div>
+
+      <div class="feedback" id="feedback"></div>
+      <button class="next" id="nextButton">
+        Nächste Frage →
+      </button>
+    </main>
+
+    <p class="tip">
+      Tipp: Zwei Achtelnoten ergeben zusammen eine Zählzeit.
     </p>
-  </header>
-
-  <div class="stats">
-    <div class="stat">
-      Frage
-      <strong id="counter">1 / 16</strong>
-    </div>
-
-    <div class="stat">
-      Punkte
-      <strong id="score">0</strong>
-    </div>
-
-    <div class="stat">
-      Richtig
-      <strong id="correctCount">0</strong>
-    </div>
   </div>
 
-  <main class="card" id="quizCard">
-    <div class="progress">
-      <div id="progressBar"></div>
-    </div>
+  <script>
+    const questions = [
+      {
+        text: "Wie viele Zählzeiten hat die abgebildete Note?",
+        symbols: ["whole"],
+        answer: "4 Zählzeiten",
+        explanation: "Eine ganze Note dauert im 4/4-Takt vier Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten hat die abgebildete Note?",
+        symbols: ["half"],
+        answer: "2 Zählzeiten",
+        explanation: "Eine halbe Note dauert zwei Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten hat die abgebildete Note?",
+        symbols: ["quarter"],
+        answer: "1 Zählzeit",
+        explanation: "Eine Viertelnote dauert eine Zählzeit."
+      },
+      {
+        text: "Wie viele Zählzeiten hat die abgebildete Note?",
+        symbols: ["eighth"],
+        answer: "0,5 Zählzeiten",
+        explanation: "Eine Achtelnote dauert eine halbe Zählzeit."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben zwei Achtelnoten zusammen?",
+        symbols: ["eighth", "eighth"],
+        answer: "1 Zählzeit",
+        explanation: "0,5 + 0,5 = 1 Zählzeit."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben vier Achtelnoten zusammen?",
+        symbols: ["eighth", "eighth", "eighth", "eighth"],
+        answer: "2 Zählzeiten",
+        explanation: "Vier Achtelnoten ergeben zwei Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben zwei Viertelnoten?",
+        symbols: ["quarter", "quarter"],
+        answer: "2 Zählzeiten",
+        explanation: "Jede Viertelnote zählt eine Zählzeit."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben eine halbe und eine Viertelnote?",
+        symbols: ["half", "quarter"],
+        answer: "3 Zählzeiten",
+        explanation: "2 + 1 = 3 Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben eine Viertelnote und zwei Achtelnoten?",
+        symbols: ["quarter", "eighth", "eighth"],
+        answer: "2 Zählzeiten",
+        explanation: "1 + 0,5 + 0,5 = 2 Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben zwei halbe Noten?",
+        symbols: ["half", "half"],
+        answer: "4 Zählzeiten",
+        explanation: "2 + 2 = 4 Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten hat die abgebildete Pause?",
+        symbols: ["wholeRest"],
+        answer: "4 Zählzeiten",
+        explanation: "Eine ganze Pause dauert vier Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten hat die abgebildete Pause?",
+        symbols: ["halfRest"],
+        answer: "2 Zählzeiten",
+        explanation: "Eine halbe Pause dauert zwei Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben zwei Viertelnoten und eine halbe Note?",
+        symbols: ["quarter", "quarter", "half"],
+        answer: "4 Zählzeiten",
+        explanation: "1 + 1 + 2 = 4 Zählzeiten."
+      },
+      {
+        text: "Wie viele Zählzeiten ergeben acht Achtelnoten?",
+        symbols: [
+          "eighth", "eighth", "eighth", "eighth",
+          "eighth", "eighth", "eighth", "eighth"
+        ],
+        answer: "4 Zählzeiten",
+        explanation: "Je zwei Achtelnoten ergeben eine Zählzeit."
+      },
+      {
+        text: "Welcher Notenwert ist hier abgebildet?",
+        symbols: ["quarter"],
+        answer: "Viertelnote",
+        options: [
+          "Viertelnote",
+          "Halbe Note",
+          "Ganze Note",
+          "Achtelnote"
+        ],
+        explanation: "Das abgebildete Zeichen ist eine Viertelnote."
+      },
+      {
+        text: "Welche Kombination ergibt genau drei Zählzeiten?",
+        symbols: ["half", "quarter"],
+        answer: "Halbe Note + Viertelnote",
+        options: [
+          "Halbe Note + Viertelnote",
+          "Vier Achtelnoten",
+          "Eine ganze Note",
+          "Zwei Viertelnoten"
+        ],
+        explanation: "Eine halbe Note zählt zwei und eine Viertelnote eine Zählzeit."
+      }
+    ];
 
-    <div class="question-number" id="questionNumber"></div>
-    <h2 class="question" id="questionText"></h2>
-    <div id="notationContainer"></div>
-    <div class="answer-grid" id="answers"></div>
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let correctCount = 0;
+    let answered = false;
 
-    <div class="feedback" id="feedback"></div>
-    <button class="next" id="nextButton">Nächste Frage →</button>
-  </main>
+    const counter = document.getElementById("counter");
+    const scoreElement = document.getElementById("score");
+    const correctElement = document.getElementById("correctCount");
+    const progressBar = document.getElementById("progressBar");
+    const questionNumber = document.getElementById("questionNumber");
+    const questionText = document.getElementById("questionText");
+    const notationContainer = document.getElementById("notationContainer");
+    const answersContainer = document.getElementById("answers");
+    const feedback = document.getElementById("feedback");
+    const nextButton = document.getElementById("nextButton");
+    const quizCard = document.getElementById("quizCard");
 
-  <p class="tip">
-    Tipp: Eine Viertelnote zählt im 4/4-Takt meistens einen Grundschlag.
-  </p>
-</div>
+    function shuffle(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
 
-<script>
-const totalQuestions = 16;
+    function noteSymbol(type, x, y = 92) {
+      if (type === "whole") {
+        return `
+          <ellipse cx="${x}" cy="${y + 10}" rx="18" ry="11"
+            fill="white" stroke="#172033" stroke-width="4"/>
+        `;
+      }
 
-const noteValues = {
-  "Ganze Note": 4,
-  "Halbe Note": 2,
-  "Viertelnote": 1,
-  "Achtelnote": 0.5,
-  "Ganze Pause": 4,
-  "Halbe Pause": 2,
-  "Viertelpause": 1
-};
+      if (type === "half") {
+        return `
+          <ellipse cx="${x}" cy="${y + 10}" rx="17" ry="10"
+            fill="white" stroke="#172033" stroke-width="4"/>
+          <line x1="${x + 17}" y1="${y + 9}"
+            x2="${x + 17}" y2="${y - 55}"
+            stroke="#172033" stroke-width="4"/>
+        `;
+      }
 
-const questions = [
-  {
-    text: "Wie viele Zählzeiten hat die abgebildete Note?",
-    type: "single",
-    symbol: "whole",
-    answer: "4 Zählzeiten",
-    explanation: "Eine ganze Note dauert im 4/4-Takt vier Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten hat die abgebildete Note?",
-    type: "single",
-    symbol: "half",
-    answer: "2 Zählzeiten",
-    explanation: "Eine halbe Note dauert zwei Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten hat die abgebildete Note?",
-    type: "single",
-    symbol: "quarter",
-    answer: "1 Zählzeit",
-    explanation: "Eine Viertelnote dauert eine Zählzeit."
-  },
-  {
-    text: "Wie viele Zählzeiten hat die abgebildete Note?",
-    type: "single",
-    symbol: "eighth",
-    answer: "0,5 Zählzeiten",
-    explanation: "Eine Achtelnote dauert eine halbe Zählzeit."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben zwei Achtelnoten zusammen?",
-    type: "combo",
-    symbols: ["eighth", "eighth"],
-    answer: "1 Zählzeit",
-    explanation: "Zwei halbe Zählzeiten ergeben zusammen eine ganze Zählzeit."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben vier Achtelnoten zusammen?",
-    type: "combo",
-    symbols: ["eighth", "eighth", "eighth", "eighth"],
-    answer: "2 Zählzeiten",
-    explanation: "Vier Achtelnoten ergeben zwei Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben zwei Viertelnoten?",
-    type: "combo",
-    symbols: ["quarter", "quarter"],
-    answer: "2 Zählzeiten",
-    explanation: "Jede Viertelnote zählt eine Zählzeit."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben eine halbe und eine Viertelnote?",
-    type: "combo",
-    symbols: ["half", "quarter"],
-    answer: "3 Zählzeiten",
-    explanation: "2 Zählzeiten + 1 Zählzeit = 3 Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben eine Viertelnote und zwei Achtelnoten?",
-    type: "combo",
-    symbols: ["quarter", "eighth", "eighth"],
-    answer: "2 Zählzeiten",
-    explanation: "1 + 0,5 + 0,5 = 2 Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben zwei halbe Noten?",
-    type: "combo",
-    symbols: ["half", "half"],
-    answer: "4 Zählzeiten",
-    explanation: "Jede halbe Note dauert zwei Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten hat die abgebildete Pause?",
-    type: "single",
-    symbol: "wholeRest",
-    answer: "4 Zählzeiten",
-    explanation: "Eine ganze Pause dauert im 4/4-Takt vier Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten hat die abgebildete Pause?",
-    type: "single",
-    symbol: "halfRest",
-    answer: "2 Zählzeiten",
-    explanation: "Eine halbe Pause dauert zwei Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben zwei Viertelnoten und eine halbe Note?",
-    type: "combo",
-    symbols: ["quarter", "quarter", "half"],
-    answer: "4 Zählzeiten",
-    explanation: "1 + 1 + 2 = 4 Zählzeiten."
-  },
-  {
-    text: "Wie viele Zählzeiten ergeben acht Achtelnoten?",
-    type: "combo",
-    symbols: [
-      "eighth", "eighth", "eighth", "eighth",
-      "eighth", "eighth", "eighth", "eighth"
-    ],
-    answer: "4 Zählzeiten",
-    explanation: "Je zwei Achtelnoten ergeben eine Zählzeit."
-  },
-  {
-    text: "Welcher Notenwert ist hier abgebildet?",
-    type: "single",
-    symbol: "quarter",
-    answer: "Viertelnote",
-    options: ["Viertelnote", "Halbe Note", "Ganze Note", "Achtelnote"],
-    explanation: "Das abgebildete Zeichen ist eine Viertelnote."
-  },
-  {
-    text: "Welche Kombination ergibt genau drei Zählzeiten?",
-    type: "pictureOptions",
-    symbol: "halfQuarter",
-    answer: "Halbe Note + Viertelnote",
-    options: [
-      "Halbe Note + Viertelnote",
-      "Vier Achtelnoten",
-      "Eine ganze Note",
-      "Zwei Viertelnoten"
-    ],
-    explanation: "Eine halbe Note zählt zwei und eine Viertelnote eine Zählzeit."
-  }
-];
+      if (type === "quarter") {
+        return `
+          <ellipse cx="${x}" cy="${y + 10}" rx="17" ry="11"
+            fill="#172033"/>
+          <line x1="${x + 16}" y1="${y + 10}"
+            x2="${x + 16}" y2="${y - 58}"
+            stroke="#172033" stroke-width="4"/>
+        `;
+      }
 
-let currentQuestions = [];
-let currentIndex = 0;
-let score = 0;
-let correctCount = 0;
-let answered = false;
+      if (type === "eighth") {
+        return `
+          <ellipse cx="${x}" cy="${y + 10}" rx="17" ry="11"
+            fill="#172033"/>
+          <line x1="${x + 16}" y1="${y + 10}"
+            x2="${x + 16}" y2="${y - 58}"
+            stroke="#172033" stroke-width="4"/>
+          <path d="M ${x + 16} ${y - 58}
+                   Q ${x + 45} ${y - 48} ${x + 38} ${y - 30}
+                   Q ${x + 28} ${y - 43} ${x + 16} ${y - 43}"
+            fill="#172033"/>
+        `;
+      }
 
-const counter = document.getElementById("counter");
-const scoreElement = document.getElementById("score");
-const correctElement = document.getElementById("correctCount");
-const progressBar = document.getElementById("progressBar");
-const questionNumber = document.getElementById("questionNumber");
-const questionText = document.getElementById("questionText");
-const notationContainer = document.getElementById("notationContainer");
-const answersContainer = document.getElementById("answers");
-const feedback = document.getElementById("feedback");
-const nextButton = document.getElementById("nextButton");
-const quizCard = document.getElementById("quizCard");
+      if (type === "wholeRest") {
+        return `
+          <rect x="${x - 19}" y="${y + 7}" width="38" height="14"
+            fill="#172033"/>
+        `;
+      }
 
-function shuffle(array) {
-  return [...array].sort(() => Math.random() - 0.5);
-}
+      if (type === "halfRest") {
+        return `
+          <rect x="${x - 19}" y="${y - 7}" width="38" height="14"
+            fill="#172033"/>
+        `;
+      }
 
-function createQuestionSet() {
-  currentQuestions = shuffle(questions);
-}
+      return "";
+    }
 
-function noteSymbol(type, x, y = 90) {
-  if (type === "whole") {
-    return `
-      <ellipse cx="${x}" cy="${y + 12}" rx="18" ry="11"
-        fill="white" stroke="#172033" stroke-width="4"/>
-    `;
-  }
+    function createNotation(types) {
+      const width = Math.max(520, 150 + types.length * 86);
+      let notes = "";
 
-  if (type === "half") {
-    return `
-      <ellipse cx="${x}" cy="${y + 12}" rx="17" ry="10"
-        fill="white" stroke="#172033" stroke-width="4"/>
-      <line x1="${x + 17}" y1="${y + 10}"
-        x2="${x + 17}" y2="${y - 55}"
-        stroke="#172033" stroke-width="4"/>
-    `;
-  }
+      types.forEach((type, index) => {
+        notes += noteSymbol(type, 145 + index * 82);
+      });
 
-  if (type === "quarter") {
-    return `
-      <ellipse cx="${x}" cy="${y + 12}" rx="17" ry="11"
-        fill="#172033"/>
-      <line x1="${x + 16}" y1="${y + 12}"
-        x2="${x + 16}" y2="${y - 58}"
-        stroke="#172033" stroke-width="4"/>
-    `;
-  }
+      return `
+        <div class="notation-box">
+          <div class="notation-title">
+            Notenbild
+          </div>
 
-  if (type === "eighth") {
-    return `
-      <ellipse cx="${x}" cy="${y + 12}" rx="17" ry="11"
-        fill="#172033"/>
-      <line x1="${x + 16}" y1="${y + 12}"
-        x2="${x + 16}" y2="${y - 58}"
-        stroke="#172033" stroke-width="4"/>
-      <path d="M ${x + 16} ${y - 58}
-               Q ${x + 45} ${y - 48} ${x + 38} ${y - 31}
-               Q ${x + 28} ${y - 44} ${x + 16} ${y - 43}"
-        fill="#172033"/>
-    `;
-  }
+          <svg class="notation"
+               viewBox="0 0 ${width} 190"
+               role="img"
+               aria-label="Notenbild mit Violinschlüssel">
 
-  if (type === "wholeRest") {
-    return `
-      <rect x="${x - 19}" y="${y + 8}" width="38" height="14"
-        fill="#172033"/>
-    `;
-  }
+            <rect x="0" y="0" width="${width}" height="190"
+              rx="13" fill="#fffdf6"/>
 
-  if (type === "halfRest") {
-    return `
-      <rect x="${x - 19}" y="${y - 5}" width="38" height="14
+            <g stroke="#8993a5" stroke-width="1.5">
+              <line x1="18" y1="55" x2="${width - 18}" y2="55"/>
+              <line x1="18" y1="72" x2="${width - 18}" y2="72"/>
+              <line x1="18" y1="89" x2="${width - 18}" y2="89"/>
+              <line x1="18" y1="106" x2="${width - 18}" y2="106"/>
+              <line x1="18" y1="123" x2="${width - 18}" y2="123"/>
+            </g>
+
+            <text x="29" y="120"
+              font-family="Georgia, serif"
+              font-size="92"
+              font-weight="bold"
+              fill="#315efb">𝄞</text>
+
+            ${notes}
+          </svg>
+        </div>
+      `;
+    }
+
+    function getAnswers(question) {
+      if (question.options) {
+        return shuffle(question.options);
+      }
+
+      const answers = [
+        "0,5 Zählzeiten",
+        "1 Zählzeit",
+        "2 Zählzeiten",
+        "3 Zählzeiten",
+        "4 Zählzeiten"
+      ];
+
+      return shuffle(
+        answers
+          .filter(answer => answer !== question.answer)
+          .slice(0, 3)
+          .concat(question.answer)
+      );
+    }
+
+    function renderQuestion() {
+      answered = false;
+
+      const question = currentQuestions[currentIndex];
+
+      counter.textContent =
+        `${currentIndex + 1} / ${currentQuestions.length}`;
+
+      scoreElement.textContent = score;
+      correctElement.textContent = correctCount;
+      questionNumber.textContent = `Frage ${currentIndex + 1}`;
+      questionText.textContent = question.text;
+
+      progressBar.style.width =
+        `${(currentIndex / currentQuestions.length) * 100}%`;
+
+      notationContainer.innerHTML =
+        createNotation(question.symbols);
+
+      answersContainer.innerHTML = "";
+      feedback.className = "feedback";
+      feedback.innerHTML = "";
+      nextButton.style.display = "none";
+
+      getAnswers(question).forEach(answer => {
+        const button = document.createElement("button");
+
+        button.className = "answer";
+        button.textContent = answer;
+
+        button.addEventListener("click", () => {
+          checkAnswer(button, answer);
+        });
+
+        answersContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedButton, selectedAnswer) {
+      if (answered) {
+        return;
+      }
+
+      answered = true;
+
+      const question = currentQuestions[currentIndex];
+      const buttons = document.querySelectorAll(".answer");
+
+      buttons.forEach(button => {
+        button.disabled = true;
+
+        if (button.textContent === question.answer) {
+          button.classList.add("correct");
+        }
+      });
+
+      if (selectedAnswer === question.answer) {
+        selectedButton.classList.add("correct");
+        score += 10;
+        correctCount++;
+
+        feedback.className = "feedback show good";
+        feedback.innerHTML =
+          `<strong>Richtig! 🎉</strong><br>${question.explanation}`;
+
+        createCelebration();
+      } else {
+        selectedButton.classList.add("wrong");
+
+        feedback.className = "feedback show bad";
+        feedback.innerHTML =
+          `<strong>Das war noch nicht richtig.</strong><br>
+           Die richtige Antwort lautet:
+           <strong>${question.answer}</strong>.<br>
+           ${question.explanation}`;
+      }
+
+      scoreElement.textContent = score;
+      correctElement.textContent = correctCount;
+      nextButton.style.display = "block";
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+
+      if (currentIndex >= currentQuestions.length) {
+        showResult();
+      } else {
+        renderQuestion();
+      }
+    }
+
+    function showResult() {
+      progressBar.style.width = "100%";
+
+      quizCard.innerHTML = `
+        <div class="result">
+          <div class="result-icon">🏆</div>
+          <h2>Quiz geschafft!</h2>
+          <p>
+            Du hast ${correctCount} von ${currentQuestions.length}
+            Fragen richtig beantwortet.
+          </p>
+          <div class="score-big">${score} Punkte</div>
+          <p>${getResultText()}</p>
+          <button class="restart" id="restartButton">
+            🔄 Noch einmal spielen
+          </button>
+        </div>
+      `;
+
+      document
+        .getElementById("restartButton")
+        .addEventListener("click", restartQuiz);
+    }
+
+    function getResultText() {
+      const percentage =
+        correctCount / currentQuestions.length;
+
+      if (percentage === 1) {
+        return "Fantastisch! Du kennst dich mit Notenwerten sehr gut aus.";
+      }
+
+      if (percentage >= 0.75) {
+        return "Sehr gut! Die meisten Notenwerte erkennst du sicher.";
+      }
+
+      if (percentage >= 0.5) {
+        return "Gut gemacht! Ein paar Notenwerte kannst du noch üben.";
+      }
+
+      return "Übung macht den Meister. Schau dir die Notenwerte noch einmal an.";
+    }
+
+    function restartQuiz() {
+      currentIndex = 0;
+      score = 0;
+      correctCount = 0;
+
+      quizCard.innerHTML = `
+        <div class="progress">
+          <div id="progressBar"></div>
+        </div>
+
+        <div class="question-number" id="questionNumber"></div>
+        <h2 class="question" id="questionText"></h2>
+        <div id="notationContainer"></div>
+        <div class="answer-grid" id="answers"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="next" id="nextButton">
+          Nächste Frage →
+        </button>
+      `;
+
+      refreshElements();
+
+      nextButton.addEventListener("click", nextQuestion);
+
+      currentQuestions = shuffle(questions);
+      renderQuestion();
+    }
+
+    function refreshElements() {
+      window.progressBar =
+        document.getElementById("progressBar");
+
+      window.questionNumber =
+        document.getElementById("questionNumber");
+
+      window.questionText =
+        document.getElementById("questionText");
+
+      window.notationContainer =
+        document.getElementById("notationContainer");
+
+      window.answersContainer =
+        document.getElementById("answers");
+
+      window.feedback =
+        document.getElementById("feedback");
+
+      window.nextButton =
+        document.getElementById("nextButton");
+    }
+
+    function createCelebration() {
+      const celebration = document.createElement("div");
+      celebration.className = "celebration";
+
+      const symbols = ["⭐", "🎵", "✨", "🎶", "🎉"];
+
+      for (let i = 0; i < 18; i++) {
+        const star = document.createElement("span");
+
+        star.className = "star";
+        star.textContent =
+          symbols[Math.floor(Math.random() * symbols.length)];
+
+        star.style.setProperty(
+          "--x",
+          `${Math.random() * 560 - 280}px`
+        );
+
+        star.style.setProperty(
+          "--y",
+          `${Math.random() * 430 - 210}px`
+        );
+
+        star.style.setProperty(
+          "--r",
+          `${Math.random() * 600 - 300}deg`
+        );
+
+        star.style.animationDelay =
+          `${Math.random() * 120}ms`;
+
+        celebration.appendChild(star);
+      }
+
+      document.body.appendChild(celebration);
+
+      setTimeout(() => {
+        celebration.remove();
+      }, 1100);
+    }
+
+    currentQuestions = shuffle(questions);
+    renderQuestion();
+  </script>
+</body>
+</html>
